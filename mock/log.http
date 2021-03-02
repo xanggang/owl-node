@@ -1,0 +1,54 @@
+
+
+###
+POST http://localhost:7001/api/log/store
+Content-Type: application/json
+
+{
+  "appName": "log",
+  "project": "file",
+  "logger": "javascript",
+  "platform": "javascript",
+  "request": {
+    "headers": {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"},
+    "url": "http://127.0.0.1:9006/"
+  },
+  "exception": {
+    "values": [{
+      "type": "TypeError",
+      "value": "this.a is not a function111",
+      "stacktrace": {
+        "frames": [{
+          "filename": "http://127.0.0.1:9006/js/chunk-vendors.f3c1d423.js",
+          "lineno": 7,
+          "colno": 51758,
+          "function": "HTMLButtonElement.Qo.i._wrapper",
+          "in_app": true
+        }, {
+          "filename": "http://127.0.0.1:9006/js/chunk-vendors.f3c1d423.js",
+          "lineno": 7,
+          "colno": 13484,
+          "function": "HTMLButtonElement.n",
+          "in_app": true
+        }, {
+          "filename": "http://127.0.0.1:9006/js/chunk-vendors.f3c1d423.js",
+          "lineno": 7,
+          "colno": 11664,
+          "function": "ne",
+          "in_app": true
+        }, {
+          "filename": "http://127.0.0.1:9006/js/app.c4d91db9.js",
+          "lineno": 1,
+          "colno": 4893,
+          "function": "a.value",
+          "in_app": true
+        }]
+      }
+    }], "mechanism": {"type": "generic", "handled": true}
+  },
+  "transaction": "http://127.0.0.1:9006/js/app.c4d91db8.js",
+  "trimHeadFrames": 0,
+  "extra": {"componentName": "component <r>", "lifecycleHook": "v-on handler", "session:duration": 1097},
+  "event_id": "851bc07211004fe0bf8f05f889bf5dba"
+}
+###

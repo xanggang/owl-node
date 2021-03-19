@@ -1,5 +1,6 @@
 import { Controller } from 'egg'
 import { Get, Post, Prefix, Delete } from '../decorator/router'
+import sha256 from 'sha256'
 
 @Prefix('/project')
 export default class ProjectController extends Controller {
@@ -9,7 +10,6 @@ export default class ProjectController extends Controller {
     const { ctx } = this
     const {
       app_name,
-      app_key,
       host,
     } = ctx.request.body
     const isErr = await this.ctx.service.project.checkAppName(app_name)
@@ -17,6 +17,7 @@ export default class ProjectController extends Controller {
       this.ctx.error(null, '应用名已被占用')
       return
     }
+    const app_key = sha256(+new Date())
     const res = await this.ctx.service.project.create({
       app_name,
       app_key,

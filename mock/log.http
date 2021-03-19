@@ -1,54 +1,229 @@
 
-
-###
-POST http://localhost:7001/api/log/store
+### 测试设备
+POST http://localhost:7001/api/logs/store
 Content-Type: application/json
 
-{
-  "appName": "log",
-  "project": "file",
-  "logger": "javascript",
-  "platform": "javascript",
-  "request": {
-    "headers": {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"},
-    "url": "http://127.0.0.1:9006/"
-  },
-  "exception": {
-    "values": [{
-      "type": "TypeError",
-      "value": "this.a is not a function111",
-      "stacktrace": {
-        "frames": [{
-          "filename": "http://127.0.0.1:9006/js/chunk-vendors.f3c1d423.js",
-          "lineno": 7,
-          "colno": 51758,
-          "function": "HTMLButtonElement.Qo.i._wrapper",
-          "in_app": true
-        }, {
-          "filename": "http://127.0.0.1:9006/js/chunk-vendors.f3c1d423.js",
-          "lineno": 7,
-          "colno": 13484,
-          "function": "HTMLButtonElement.n",
-          "in_app": true
-        }, {
-          "filename": "http://127.0.0.1:9006/js/chunk-vendors.f3c1d423.js",
-          "lineno": 7,
-          "colno": 11664,
-          "function": "ne",
-          "in_app": true
-        }, {
-          "filename": "http://127.0.0.1:9006/js/app.c4d91db9.js",
-          "lineno": 1,
-          "colno": 4893,
-          "function": "a.value",
-          "in_app": true
-        }]
-      }
-    }], "mechanism": {"type": "generic", "handled": true}
-  },
-  "transaction": "http://127.0.0.1:9006/js/app.c4d91db8.js",
-  "trimHeadFrames": 0,
-  "extra": {"componentName": "component <r>", "lifecycleHook": "v-on handler", "session:duration": 1097},
-  "event_id": "851bc07211004fe0bf8f05f889bf5dba"
-}
+[
+  {
+    "type": "device",
+    "device_browser_name": "Mac OS X",
+    "device_browser_version": "10.15.7",
+    "device_engine_name": "Nightly",
+    "device_engine_version": "Chrome",
+    "device_os_name": "88.0.4324.192",
+    "device_os_version": "Webkit"
+  }
+]
+
+###
+
+### 测试性能
+POST http://localhost:7001/api/logs/store
+Content-Type: application/json
+
+[
+  {
+    "type": "performance",
+    "load_page": 998,
+    "dom_ready": 972,
+    "redirect": 0,
+    "lookup_domain": 0,
+    "ttfb": 12,
+    "request": 17,
+    "load_event": 0,
+    "appcache": 0,
+    "connect": 0
+  }
+]
+
+###
+
+### api
+POST http://localhost:7001/api/logs/store
+Content-Type: application/json
+
+[
+  {
+    "status": 0,
+    "headers": "{\"Accept\":\"application/json, text/plain, */*\"}",
+    "request": "{\"method\":\"GET\",\"url\":\"http://127.0.0.1:8888/api/any\",\"body\":null}",
+    "url": "http://127.0.0.1:8888/api/any",
+    "response": "",
+    "request_time": 1615195754140,
+    "type": "api"
+  }
+]
+
+###
+
+###
+POST http://localhost:7001/api/logs/store
+Content-Type: application/json
+
+[
+    {
+        "exception": {
+            "values": [
+                {
+                    "type": "TypeError",
+                    "value": "Cannot read property 'forEach' of undefined",
+                    "stacktrace": {
+                        "frames": [
+                            {
+                                "colno": 25,
+                                "filename": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js",
+                                "function": "HTMLButtonElement.original._wrapper",
+                                "in_app": true,
+                                "lineno": 6907
+                            },
+                            {
+                                "colno": 14,
+                                "filename": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js",
+                                "function": "HTMLButtonElement.invoker",
+                                "in_app": true,
+                                "lineno": 2178
+                            },
+                            {
+                                "colno": 26,
+                                "filename": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js",
+                                "function": "invokeWithErrorHandling",
+                                "in_app": true,
+                                "lineno": 1853
+                            },
+                            {
+                                "colno": 12,
+                                "filename": "webpack-internal:///./node_modules/element-ui/lib/element-ui.common.js",
+                                "function": "VueComponent.handleClick",
+                                "in_app": true,
+                                "lineno": 9413
+                            },
+                            {
+                                "colno": 9,
+                                "filename": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js",
+                                "function": "VueComponent.Vue.$emit",
+                                "in_app": true,
+                                "lineno": 3882
+                            },
+                            {
+                                "colno": 26,
+                                "filename": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js",
+                                "function": "invokeWithErrorHandling",
+                                "in_app": true,
+                                "lineno": 1853
+                            },
+                            {
+                                "colno": 14,
+                                "filename": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js",
+                                "function": "VueComponent.invoker",
+                                "in_app": true,
+                                "lineno": 2178
+                            },
+                            {
+                                "colno": 26,
+                                "filename": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js",
+                                "function": "invokeWithErrorHandling",
+                                "in_app": true,
+                                "lineno": 1853
+                            },
+                            {
+                                "colno": 14,
+                                "filename": "webpack-internal:///./node_modules/cache-loader/dist/cjs.js?!./node_modules/babel-loader/lib/index.js!./node_modules/cache-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./src/views/device.vue?vue&type=script&lang=js&",
+                                "function": "VueComponent.run4",
+                                "in_app": true,
+                                "lineno": 34
+                            }
+                        ]
+                    }
+                }
+            ],
+            "transaction": "webpack-internal:///./node_modules/vue/dist/vue.runtime.esm.js"
+        },
+        "vueData": {
+            "componentName": "ElButton",
+            "propsData": {}
+        },
+        "device": {
+            "device_browser_name": "Chrome",
+            "device_browser_version": "89.0.4389.90",
+            "device_engine_name": "Webkit",
+            "device_engine_version": "537.36",
+            "device_os_name": "Mac OS X",
+            "device_os_version": "10.15.7"
+        },
+        "userBehavior": [
+            {
+                "path": "/",
+                "behavior": [
+                    {
+                        "type": "click",
+                        "happenTime": 1616058627974,
+                        "simpleUrl": "http://localhost:8080/device",
+                        "router": "/",
+                        "className": "el-button el-button--default",
+                        "placeholder": "",
+                        "inputValue": "",
+                        "tagName": "BUTTON",
+                        "innerText": "函数错误"
+                    },
+                    {
+                        "type": "click",
+                        "happenTime": 1616058636427,
+                        "simpleUrl": "http://localhost:8080/device",
+                        "router": "/",
+                        "className": "el-main page-main",
+                        "placeholder": "",
+                        "inputValue": "",
+                        "tagName": "MAIN",
+                        "innerText": "vue内部错误template内部错误http请求错误函数错误promise"
+                    },
+                    {
+                        "type": "click",
+                        "happenTime": 1616058637546,
+                        "simpleUrl": "http://localhost:8080/device",
+                        "router": "/",
+                        "className": "el-button el-button--default",
+                        "placeholder": "",
+                        "inputValue": "",
+                        "tagName": "BUTTON",
+                        "innerText": "template内部错误"
+                    },
+                    {
+                        "type": "click",
+                        "happenTime": 1616058638179,
+                        "simpleUrl": "http://localhost:8080/device",
+                        "router": "/",
+                        "className": "el-button el-button--default",
+                        "placeholder": "",
+                        "inputValue": "",
+                        "tagName": "BUTTON",
+                        "innerText": "http请求错误"
+                    },
+                    {
+                        "type": "click",
+                        "happenTime": 1616058643443,
+                        "simpleUrl": "http://localhost:8080/device",
+                        "router": "/",
+                        "className": "el-main page-main",
+                        "placeholder": "",
+                        "inputValue": "",
+                        "tagName": "MAIN",
+                        "innerText": "vue内部错误template内部错误http请求错误函数错误promise"
+                    },
+                    {
+                        "type": "click",
+                        "happenTime": 1616058674419,
+                        "simpleUrl": "http://localhost:8080/device",
+                        "router": "/",
+                        "className": "el-button el-button--default",
+                        "placeholder": "",
+                        "inputValue": "",
+                        "tagName": "BUTTON",
+                        "innerText": "函数错误"
+                    }
+                ]
+            }
+        ],
+        "type": "error"
+    }
+]
 ###

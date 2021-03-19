@@ -65,6 +65,8 @@ export default class FileController extends Controller {
     const ip = _.get(data, [ 'request', 'url' ])
     const file_path = _.get(data, [ 'transaction' ])
 
+    const breadcrumbs = _.get(data, 'breadcrumbs.values')
+
     // 解析错误源码
     const exception = _.get(data, [ 'exception', 'values', 0 ])
     if (exception) {
@@ -115,6 +117,7 @@ export default class FileController extends Controller {
         err_type,
         file_path,
         err_content,
+        breadcrumbs: JSON.stringify(breadcrumbs),
       })
       project.addLogBody(historyLog)
     }
@@ -167,6 +170,7 @@ export default class FileController extends Controller {
       file_path,
       err_content,
       historyLog,
+      breadcrumbs,
     }
   }
 

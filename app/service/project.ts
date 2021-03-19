@@ -28,6 +28,18 @@ export default class ProjectService extends Service {
     return null
   }
 
+  async getOneByAppKey(app_key) {
+    const res = await this.ctx.model.Project.findAll({
+      where: {
+        app_key,
+      },
+    })
+    if (Array.isArray(res) && res.length) {
+      return res[0]
+    }
+    return null
+  }
+
   async deleteProject(id) {
     const project = await this.ctx.model.Project.findByPk(id)
     if (!project) {

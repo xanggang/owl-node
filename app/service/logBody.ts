@@ -7,6 +7,8 @@ import { Op } from 'sequelize'
 import path from 'path'
 import fs from 'fs'
 import { ILogBody } from '../model/logBody'
+import _ from "lodash";
+import dayjs from "dayjs";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -28,6 +30,103 @@ function html2Escape(sHtml: string | undefined) {
 }
 
 export default class LogBodyService extends Service {
+
+  async uploadLog(data) {
+    const { app_name, ip } = data
+    const project = await this.ctx.service.project.getOne(app_name)
+
+    let err_message,
+      err_type,
+      error,
+      err_content,
+      function_name
+
+    const file_path = _.get(data, 'exception.transaction')
+
+    const breadcrumbs = _.get(data, 'userBehavior')
+
+    // 解析错误源码
+    const exception = _.get(data, [ 'exception', 'values', 0 ])
+    if (exception) {
+      err_type = exception.type
+      err_message = exception.value
+      const frames = _.get(exception, [ 'stacktrace', 'frames' ], [])
+      error = frames[frames.length - 1] || {}
+      function_name = error.function
+    }
+    // vue模式， 解析vue组建信息
+    const component_name = _.get(data, [ 'vueData', 'componentName' ])
+    const props_data = _.get(data, [ 'vueData', 'propsData' ], '')
+    // 解析用户数据
+    const device = data.device || {}
+
+    const {
+      device_os_name,
+      device_os_version,
+      device_engine_version,
+      device_browser_version,
+      device_engine_name,
+      device_browser_name,
+    } = device
+
+    const hash = await this.ctx.service.logBody.getHash(err_message, file_path)
+    const historyLogs = await this.ctx.service.logBody.getLogByHash(app_name, hash)
+    let historyLog: any = historyLogs[0] || {}
+    // 这一条bug以前没有记录过
+    if (!historyLogs.length) {
+      // 解析bug
+      if (file_path && error && error.lineno && error.colno) {
+        const sourceMapPath = await this.ctx.service.logBody.getSourceMapPath(app_name, file_path)
+        if (sourceMapPath) {
+          const sourceMap = fs.readFileSync(sourceMapPath)
+          err_content = await this.ctx.service.logBody.sourceMapDeal(
+            sourceMap.toString(),
+            error.lineno,
+            error.colno, 10)
+        }
+      }
+
+      // 保存错误体
+      const saveData: any = {
+        app_name,
+        ip,
+        hash,
+        device_os_name,
+        device_os_version,
+        device_engine_version,
+        device_browser_version,
+        device_engine_name,
+        device_browser_name,
+        err_message,
+        err_type,
+        file_path,
+        err_content,
+        function_name,
+        component_name,
+      }
+      if (props_data) {
+        saveData.props_data = JSON.stringify(props_data)
+        saveData.breadcrumbs = JSON.stringify(breadcrumbs)
+      }
+      historyLog = await this.ctx.service.logBody.create(saveData)
+      project.addLogBody(historyLog)
+    }
+
+    const detail = await this.ctx.service.logDetail.create({
+      ip,
+      app_name,
+      device_os_name,
+      device_os_version,
+      device_engine_version,
+      device_browser_version,
+      device_engine_name,
+      device_browser_name,
+    })
+
+    const res = await historyLog.addLogDetails(detail)
+    await historyLog.update({ updated_at: dayjs().format('YYYY-MM-DD HH:mm:ss') })
+    return res
+  }
 
   // 通过错误信息和错误的文件计算哈希
   async getHash(msg, file) {
@@ -147,5 +246,4 @@ export default class LogBodyService extends Service {
 
     return logBodyList
   }
-
 }

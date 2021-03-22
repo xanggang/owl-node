@@ -82,10 +82,10 @@ export default class LogBodyService extends Service {
           err_content = await this.ctx.service.logBody.sourceMapDeal(
             sourceMap.toString(),
             error.lineno,
-            error.colno, 10)
+            error.colno, 1)
         }
       }
-
+      err_content = err_content && err_content.length > 10000 ? 'too long' : err_content
       // 保存错误体
       const saveData: any = {
         app_name,
@@ -111,7 +111,6 @@ export default class LogBodyService extends Service {
       historyLog = await this.ctx.service.logBody.create(saveData)
       project.addLogBody(historyLog)
     }
-
     const detail = await this.ctx.service.logDetail.create({
       ip,
       app_name,
@@ -122,7 +121,6 @@ export default class LogBodyService extends Service {
       device_engine_name,
       device_browser_name,
     })
-
     const res = await historyLog.addLogDetails(detail)
     await historyLog.update({ updated_at: dayjs().format('YYYY-MM-DD HH:mm:ss') })
     return res

@@ -1,6 +1,6 @@
 
 export default (app): any => {
-  const { INTEGER, CHAR, TEXT } = app.Sequelize
+  const { INTEGER, CHAR } = app.Sequelize
 
   const logDetail = app.model.define('logDetails', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
@@ -13,7 +13,6 @@ export default (app): any => {
     device_browser_version: { type: CHAR },
     device_engine_name: { type: CHAR },
     device_browser_name: { type: CHAR },
-    err_type: { type: TEXT },
   }, {
     timestamps: true,
     raw: true,

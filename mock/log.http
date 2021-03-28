@@ -1,4 +1,19 @@
 
+### 查询Api错误
+GET http://localhost:7001/api/logs/apiErrorsStatistics?projectId=26&startTime=2020-03-26+00%3a00%3a00&endTime=2022-03-26+23%3a59%3a00
+Accept: application/json
+###
+
+### 查询性能平均值
+GET http://localhost:7001/api/logs/performanceAvg?projectId=26&startTime=2021-03-26+00%3a00%3a00&endTime=2021-03-26+23%3a59%3a00
+Accept: application/json
+###
+
+### 查询设备分布
+GET http://localhost:7001/api/logs/deviceStatistics?projectId=26&startTime=2021-03-26+00%3a00%3a00&endTime=2021-03-26+23%3a59%3a00&type=device_browser_name
+Accept: application/json
+###
+
 ### 测试设备
 POST http://localhost:7001/api/logs/store
 Content-Type: application/json
@@ -6,12 +21,12 @@ Content-Type: application/json
 [
   {
     "type": "device",
-    "device_browser_name": "Mac OS X",
-    "device_browser_version": "10.15.7",
-    "device_engine_name": "Nightly",
-    "device_engine_version": "Chrome",
-    "device_os_name": "88.0.4324.192",
-    "device_os_version": "Webkit"
+    "device_browser_name": "test1",
+    "device_browser_version": "81.0.4044.117",
+    "device_engine_name": "Webkit",
+    "device_engine_version": "605.1.15",
+    "device_os_name": "Mac OS X",
+    "device_os_version": "10.15.7"
   }
 ]
 
@@ -60,6 +75,117 @@ Content-Type: application/json
 POST http://localhost:7001/api/logs/store
 Content-Type: application/json
 
-[{"exception":{"values":[{"type":"ReferenceError","value":"Cannot access 'a' before initialization","stacktrace":{"frames":[{"colno":13,"filename":"http://localhost:3000/mmm.js","function":"HTMLDocument.document.onclick","in_app":true,"lineno":3}]},"mechanism":{"handled":false,"type":"onerror"}}],"transaction":"http://localhost:3000/mmm.js"},"device":{"device_browser_name":"Chrome","device_browser_version":"89.0.4389.90","device_engine_name":"Webkit","device_engine_version":"537.36","device_os_name":"Mac OS X","device_os_version":"10.15.7"},"userBehavior":[{"path":"/","behavior":[{"type":"click","happenTime":1616386143026,"simpleUrl":"http://localhost:3000/device","router":"/","className":"el-main page-main","placeholder":"","inputValue":"","tagName":"MAIN","innerText":"vue内部错误template内部错误http请求错误函数错误promise"}]}],"type":"error"}]
+[
+  {
+    "exception": {
+      "values": [
+        {
+          "type": "TypeError",
+          "value": "Cannot read property 'forEach' of undefined",
+          "stacktrace": {
+            "frames": [
+              {
+                "colno": 51758,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "HTMLButtonElement.Qr.a._wrapper",
+                "in_app": true,
+                "lineno": 8
+              },
+              {
+                "colno": 13484,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "HTMLButtonElement.i",
+                "in_app": true,
+                "lineno": 8
+              },
+              {
+                "colno": 11664,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "it",
+                "in_app": true,
+                "lineno": 8
+              },
+              {
+                "colno": 191687,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "o.handleClick",
+                "in_app": true,
+                "lineno": 14
+              },
+              {
+                "colno": 26491,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "o.Ei.e.$emit",
+                "in_app": true,
+                "lineno": 8
+              },
+              {
+                "colno": 11664,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "it",
+                "in_app": true,
+                "lineno": 8
+              },
+              {
+                "colno": 13484,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "o.i",
+                "in_app": true,
+                "lineno": 8
+              },
+              {
+                "colno": 11664,
+                "filename": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js",
+                "function": "it",
+                "in_app": true,
+                "lineno": 8
+              },
+              {
+                "colno": 54951,
+                "filename": "http://localhost:3000/js/about.dc30fc55.js",
+                "function": "o.run4",
+                "in_app": true,
+                "lineno": 1
+              }
+            ]
+          }
+        }
+      ],
+      "transaction": "http://localhost:3000/js/chunk-vendors.4d9d5a8f.js"
+    },
+    "vueData": {
+      "componentName": "ElButton",
+      "propsData": {}
+    },
+    "device": {
+      "device_browser_name": "Chrome",
+      "device_browser_version": "89.0.4389.90",
+      "device_engine_name": "Webkit",
+      "device_engine_version": "537.36",
+      "device_os_name": "Mac OS X",
+      "device_os_version": "10.15.7"
+    },
+    "userBehavior": [
+      {
+        "path": "/",
+        "behavior": [
+          {
+            "type": "click",
+            "happenTime": 1616397245203,
+            "simpleUrl": "http://localhost:3000/device",
+            "router": "/",
+            "className": "",
+            "placeholder": "",
+            "inputValue": "",
+            "tagName": "SPAN",
+            "innerText": "函数错误"
+          }
+        ]
+      }
+    ],
+    "type": "error"
+  }
+]
 
 ###
+

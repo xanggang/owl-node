@@ -3,6 +3,7 @@ export default (app): any => {
 
   const device = app.model.define('device', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+    project_id: { type: INTEGER },
     ip: { type: TEXT },
     city: { type: TEXT },
     device_browser_name: { type: TEXT },

@@ -1,33 +1,13 @@
 import { Service } from 'egg'
-import { SourceMapConsumer } from 'source-map'
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import sha256 from 'sha256'
 import { Op } from 'sequelize'
 import path from 'path'
 import fs from 'fs'
 import { ILogBody } from '../model/logBody'
-import _ from "lodash";
-import dayjs from "dayjs";
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-SourceMapConsumer.initialize({
-  'lib/mappings.wasm': 'https://unpkg.com/source-map@0.7.3/lib/mappings.wasm',
-})
-
-/**
- * 转义html标签。 否则vue无法展示
- * @param sHtml string
- */
-function html2Escape(sHtml: string | undefined) {
-  if (typeof sHtml !== 'string') {
-    return sHtml
-  }
-  return sHtml.replace(/[<>&"]/g, function(c) {
-    return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]
-  })
-}
+import _ from 'lodash'
+import dayjs from 'dayjs'
+import { getHash, sourceMapDeal, getSourceMapPath } from '../utils/sourceMap'
 
 export default class LogBodyService extends Service {
 
@@ -69,17 +49,17 @@ export default class LogBodyService extends Service {
       device_browser_name,
     } = device
 
-    const hash = await this.ctx.service.logBody.getHash(err_message, file_path)
+    const hash = getHash(err_message, file_path)
     const historyLogs = await this.ctx.service.logBody.getLogByHash(app_name, hash)
     let historyLog: any = historyLogs[0] || {}
     // 这一条bug以前没有记录过
     if (!historyLogs.length) {
       // 解析bug
       if (file_path && error && error.lineno && error.colno) {
-        const sourceMapPath = await this.ctx.service.logBody.getSourceMapPath(app_name, file_path)
+        const sourceMapPath = await getSourceMapPath(app_name, file_path)
         if (sourceMapPath) {
           const sourceMap = fs.readFileSync(sourceMapPath)
-          err_content = await this.ctx.service.logBody.sourceMapDeal(
+          err_content = await sourceMapDeal(
             sourceMap.toString(),
             error.lineno,
             error.colno, 1)
@@ -126,10 +106,6 @@ export default class LogBodyService extends Service {
     return res
   }
 
-  // 通过错误信息和错误的文件计算哈希
-  async getHash(msg, file) {
-    return sha256(msg + file)
-  }
 
   // 保存错误的主体， 不包含客户端信息
   async create(data: any): Promise<any> {
@@ -160,44 +136,6 @@ export default class LogBodyService extends Service {
     return null
   }
 
-  // 解析sourceMap 返回编译前的源码
-  async sourceMapDeal(rawSourceMap: any, line, column, offset = 5): Promise<string> {
-    // 通过sourceMap库转换为sourceMapConsumer对象
-    const consumer = await new SourceMapConsumer(rawSourceMap)
-    // 传入要查找的行列数，查找到压缩前的源文件及行列数
-    const sm: any = consumer.originalPositionFor({
-      line, // 压缩后的行数
-      column, // 压缩后的列数
-    })
-    // 压缩前的所有源文件列表
-    const { sources } = consumer
-    // 根据查到的source，到源文件列表中查找索引位置
-    const smIndex = sources.indexOf(sm.source)
-    // 到源码列表中查到源代码
-    const smContent = consumer.sourcesContent[smIndex]
-    // 将源代码串按"行结束标记"拆分为数组形式
-    const rawLines = smContent.split(/\r?\n/g)
-
-    let begin = sm.line - offset
-    const end = sm.line + offset + 1
-    begin = begin < 0 ? 0 : begin
-
-    let stringList = ''
-
-    for (let i = begin; i <= end; i++) {
-      const code = html2Escape(rawLines[i])
-      if (i === sm.line - 1) {
-        stringList += `<code class="red"><pre>${code} </pre></code>`
-      } else {
-        stringList += rawLines[i] ? `<code><pre>${code} </pre></code>` : ''
-      }
-    }
-
-    // 记得销毁
-    consumer.destroy()
-    return stringList
-  }
-
   // 查询单个
   async getOne(errId) {
     const log = await this.ctx.model.LogBody.findByPk(errId, {
@@ -212,7 +150,7 @@ export default class LogBodyService extends Service {
     const {
       page = 1,
       limit = 10,
-      app_name,
+      projectId,
       startTime,
       endTime,
       order = 'desc',
@@ -220,7 +158,7 @@ export default class LogBodyService extends Service {
     const query: any = {
       order: [[ 'created_at', order ], [ 'id', 'desc' ]],
       where: {
-        app_name,
+        project_id: projectId,
       },
       offset: (page - 1) * limit,
       limit,

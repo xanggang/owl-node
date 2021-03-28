@@ -1,6 +1,7 @@
 import { app } from 'egg-mock/bootstrap';
-import assert from 'assert'
-import fs from "fs";
+// import assert from 'assert'
+// @ts-ignore
+import fs from "fs"
 
 describe('logBody', () => {
   // it('通过错误信息和错误的文件计算哈希', async () => {
@@ -27,5 +28,4 @@ describe('logBody', () => {
       7,
       67321, 10)
   });
-
 });

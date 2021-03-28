@@ -26,9 +26,9 @@ export default {
     }
     console.error(message)
   },
-  validator(this: Context, rules: any) {
+  validator(this: Context, rules: any, data = this.body) {
     try {
-      this.validate(rules)
+      this.validate(rules, data)
     } catch (err) {
       return err.errors
     }

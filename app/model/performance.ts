@@ -3,6 +3,7 @@ export default (app): any => {
 
   const device = app.model.define('performance', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+    project_id: { type: INTEGER },
     ip: { type: TEXT },
     load_page: { type: DOUBLE },
     dom_ready: { type: DOUBLE },

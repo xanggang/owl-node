@@ -4,7 +4,7 @@ export default (app): any => {
   const device = app.model.define('apiErrors', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     ip: { type: TEXT },
-    device: { type: TEXT },
+    project_id: { type: INTEGER },
     headers: { type: TEXT },
     request: { type: TEXT },
     request_time: { type: TEXT },

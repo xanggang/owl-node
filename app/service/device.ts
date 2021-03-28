@@ -1,5 +1,5 @@
 import { Service } from 'egg'
-import { Op } from 'sequelize'
+import { col, fn, Op } from 'sequelize'
 import dayjs from 'dayjs'
 
 export default class DeviceService extends Service {
@@ -7,7 +7,7 @@ export default class DeviceService extends Service {
   async create(data) {
     const { ip } = data
     const res = await this.checkToDayIsSave(ip)
-    if (!res) return true
+    // if (!res) return true
     return await this.ctx.model.Device.create({
       ...data,
       pv: 1,
@@ -55,4 +55,28 @@ export default class DeviceService extends Service {
     //
   }
 
+  // 查询一个阶段内的全部统计数据
+  async getDeviceStatistics(par) {
+    const {
+      project_id,
+      start_time,
+      end_time,
+      type,
+    } = par
+    return this.ctx.model.Device.findAll({
+      where: {
+        project_id,
+        updatedAt: {
+          [Op.gt]: +new Date(start_time),
+          [Op.lt]: +new Date(end_time),
+        },
+      },
+      group: type,
+      attributes: [
+        type,
+        [ fn('SUM', col('pv')), 'pv' ],
+      ],
+      raw: true,
+    })
+  }
 }

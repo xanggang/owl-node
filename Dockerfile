@@ -8,6 +8,7 @@ COPY package.json /app/
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
 
 RUN cnpm install
+RUN npm run tsc
 
 COPY . /app/
 

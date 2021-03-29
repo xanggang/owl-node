@@ -1,7 +1,9 @@
-import { EggAppConfig, PowerPartial } from 'egg'
+import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg'
 
-export default () => {
+export default (appInfo: EggAppInfo) => {
   const config: PowerPartial<EggAppConfig> = {}
+
+  config.keys = appInfo.name + '_1596444623473_2349'
 
   config.sequelize = {
     dialect: 'mysql',
@@ -16,6 +18,12 @@ export default () => {
       dateStrings: true,
       typeCast: true,
     },
+  }
+
+  config.logger = {
+    level: 'DEBUG',
+    allowDebugAtProd: true,
+    disableConsoleAfterReady: false,
   }
 
   return config

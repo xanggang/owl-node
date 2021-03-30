@@ -3,6 +3,10 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg'
 export default (appInfo: EggAppInfo) => {
   const config: PowerPartial<EggAppConfig> = {}
 
+  console.log('PROD_MY_SQL_HOST', process.env.PROD_MY_SQL_HOST)
+  console.log('PROD_MY_SQL_PASSWORD', process.env.PROD_MY_SQL_PASSWORD)
+  console.log('PROD_MY_SQL_PORT', process.env.PROD_MY_SQL_HOST)
+
   config.keys = appInfo.name + '_1596444623473_2349'
 
   config.sequelize = {

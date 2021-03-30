@@ -3,15 +3,13 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY package.json /app/
-COPY tsconfig.json /app/
+COPY . /app/
 
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
 
 RUN cnpm install
-RUN npm run tsc
 
-COPY . /app/
+RUN npm run tsc
 
 # 暴露容器端口
 EXPOSE 7001

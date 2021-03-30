@@ -1,6 +1,14 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg'
 // import self from '../self.json'
-const self: any = {}
+const self: any = {
+  qiniu: {},
+  mysql: {
+    address: '100.100.1.100',
+    password: 'password',
+  },
+  dingtalk: {},
+  secret: {},
+}
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>

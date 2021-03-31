@@ -11,12 +11,16 @@ export default class ApiErrorService extends Service {
   // todo 通过sql实现
   async getApiErrorsStatistics(par) {
     const {
+      page = 1,
+      limit = 10,
       project_id,
       start_time,
       end_time,
+      order = 'desc',
     } = par
 
-    const res: any[] = await this.ctx.model.ApiError.findAll({
+    const res: any = await this.ctx.model.ApiError.findAndCountAll({
+      order: [[ 'created_at', order ], [ 'id', 'desc' ]],
       where: {
         project_id,
         updatedAt: {
@@ -24,13 +28,22 @@ export default class ApiErrorService extends Service {
           [Op.lt]: +new Date(end_time),
         },
       },
+      limit,
+      offset: (page - 1) * limit,
       raw: true,
-    }) || []
+      distinct: true,
+    })
 
     const list: any = []
     const urlSet = new Set()
+    if (!res.rows?.length) {
+      return {
+        rows: [],
+        count: 0,
+      }
+    }
 
-    for (const data of res) {
+    for (const data of res.rows) {
       const url = data.url
       if (urlSet.has(url)) {
         continue
@@ -50,7 +63,14 @@ export default class ApiErrorService extends Service {
       data.count = count
       list.push(data)
     }
-    return list
+    return {
+      rows: list,
+      count: list.length,
+    }
+  }
 
+  async getApiDetail(id) {
+    const log = await this.ctx.model.ApiError.findByPk(id)
+    return log
   }
 }

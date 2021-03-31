@@ -125,4 +125,17 @@ export default class FileController extends Controller {
     })
     this.ctx.success(res)
   }
+
+  /**
+   * 查询api错误详情
+   */
+  @Get('/apiErrorsDetail')
+  async apiErrorDetail() {
+    const id = this.ctx.query.id
+    if (!id) {
+      return this.ctx.error(null, 'id is require')
+    }
+    const res = await this.service.apiError.getApiDetail(id)
+    this.ctx.success(res)
+  }
 }

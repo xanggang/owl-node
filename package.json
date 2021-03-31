@@ -34,7 +34,8 @@
     "reflect-metadata": "^0.1.13",
     "sha256": "^0.2.0",
     "source-map": "^0.7.3",
-    "ua-device": "^0.1.10"
+    "ua-device": "^0.1.10",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.40",

@@ -1,6 +1,6 @@
 import { Controller } from 'egg'
 import { Get, Post, Prefix, Delete } from '../decorator/router'
-import sha256 from 'sha256'
+import uuid from 'uuid'
 
 @Prefix('/project')
 export default class ProjectController extends Controller {
@@ -10,21 +10,18 @@ export default class ProjectController extends Controller {
     const { ctx } = this
     const {
       app_name,
-      host,
     } = ctx.request.body
     const isErr = await this.ctx.service.project.checkAppName(app_name)
     if (isErr) {
       this.ctx.error(null, '应用名已被占用')
       return
     }
-    const app_key = sha256(+new Date())
+    const app_key = uuid()
     const res = await this.ctx.service.project.create({
       app_name,
       app_key,
-      host,
     })
-
-    ctx.body = res
+    ctx.success(res, '创建成功')
   }
 
   @Delete('/delete')
@@ -40,12 +37,14 @@ export default class ProjectController extends Controller {
 
   @Get('/getDay')
   public async getDay() {
-    this.ctx.body = await this.ctx.service.project.getDayLogs()
+    const res = await this.ctx.service.project.getDayLogs()
+    this.ctx.success(res)
   }
 
   @Get('/list')
   public async getProjectList() {
-    this.ctx.body = await this.ctx.service.project.getProjectList()
+    const res = await this.ctx.service.project.getProjectList()
+    this.ctx.success(res)
   }
 
 }

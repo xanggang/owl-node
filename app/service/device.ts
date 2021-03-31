@@ -73,8 +73,8 @@ export default class DeviceService extends Service {
       },
       group: type,
       attributes: [
-        type,
-        [ fn('SUM', col('pv')), 'pv' ],
+        [ type, 'name' ],
+        [ fn('SUM', col('pv')), 'value' ],
       ],
       raw: true,
     })

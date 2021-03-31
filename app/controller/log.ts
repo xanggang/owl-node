@@ -60,8 +60,6 @@ export default class FileController extends Controller {
       endTime,
       projectId,
     })
-
-    this.ctx.body = logBodyList
-
+    this.ctx.success(logBodyList)
   }
 }

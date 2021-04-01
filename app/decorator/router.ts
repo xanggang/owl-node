@@ -67,6 +67,7 @@ const Get = createMappingDecorator('get')
 const Post = createMappingDecorator('post')
 const Put = createMappingDecorator('put')
 const Delete = createMappingDecorator('delete')
+const Options = createMappingDecorator('options')
 
 
 export {
@@ -75,5 +76,6 @@ export {
   Put,
   Delete,
   Prefix,
+  Options,
   getRouter,
 }

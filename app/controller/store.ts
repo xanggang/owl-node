@@ -7,7 +7,11 @@ export default class FileController extends Controller {
 
   @Post('/store')
   async uploadLog() {
+    console.log('Access-Control-Allow-Origin POST')
     const { ctx } = this
+    console.log('chost', ctx.request.host)
+    console.log('url', ctx.request.url)
+    console.log('ip', ctx.request.ip)
     // const { api_key } = ctx.request.headers
     const api_key = '123'
     const queue = ctx.request.body || []

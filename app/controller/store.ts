@@ -9,9 +9,10 @@ export default class FileController extends Controller {
   async uploadLog() {
     console.log('Access-Control-Allow-Origin POST')
     const { ctx } = this
-    console.log('chost', ctx.request.host)
+    console.log('host', ctx.request.host)
     console.log('url', ctx.request.url)
     console.log('ip', ctx.request.ip)
+    console.log('原始ip', ctx.request.socket.remoteAddress)
     // const { api_key } = ctx.request.headers
     const api_key = '123'
     const queue = ctx.request.body || []

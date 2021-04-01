@@ -1,18 +1,14 @@
 import { Controller } from 'egg'
 import { Post, Get, Prefix } from '../decorator/router'
 import dayjs from 'dayjs'
+import sysCors from '../middleware/sysCors'
 
 @Prefix('/logs')
 export default class FileController extends Controller {
 
-  @Post('/store')
+  @Post('/store', [ sysCors ])
   async uploadLog() {
-    console.log('Access-Control-Allow-Origin POST')
     const { ctx } = this
-    console.log('host', ctx.request.host)
-    console.log('url', ctx.request.url)
-    console.log('ip', ctx.request.ip)
-    console.log('原始ip', ctx.request.socket.remoteAddress)
     // const { api_key } = ctx.request.headers
     const api_key = '123'
     const queue = ctx.request.body || []

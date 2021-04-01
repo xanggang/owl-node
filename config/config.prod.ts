@@ -30,7 +30,7 @@ export default (appInfo: EggAppInfo) => {
   }
 
   config.security = {
-    domainWhiteList: [ 'http://owl-web.lynn.cool' ],
+    domainWhiteList: [ 'http://owl-web.lynn.cool', 'http://172.17.0.5' ],
   }
 
   config.logger = {

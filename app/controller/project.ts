@@ -8,10 +8,9 @@ export default class ProjectController extends Controller {
   // 创建一个应用
   @Post('/create')
   public async create() {
-    const { ctx } = this
     const {
       app_name,
-    } = ctx.request.body
+    } = this.ctx.request.body
     const isErr = await this.ctx.service.project.checkAppName(app_name)
     if (isErr) {
       this.ctx.error(null, '应用名已被占用')
@@ -22,7 +21,7 @@ export default class ProjectController extends Controller {
       app_name,
       app_key,
     })
-    ctx.success(res, '创建成功')
+    this.ctx.success(res, '创建成功')
   }
 
   //  删除

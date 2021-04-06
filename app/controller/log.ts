@@ -8,13 +8,12 @@ export default class FileController extends Controller {
 
   @Post('/upload-map')
   public async uploadSourceMap() {
-    const { ctx } = this
-    const stream = ctx.req
+    const stream = this.ctx.req
     const { fileName, apiKey } = this.ctx.query
     const project = await this.ctx.service.project.getOneByAppKey(apiKey)
     if (!project) {
-      ctx.status = 500
-      ctx.body = '应用名不存在, 请先创建对应的应用'
+      this.ctx.status = 500
+      this.ctx.body = '应用名不存在, 请先创建对应的应用'
       console.error('应用名不存在, 请先创建对应的应用')
       return
     }
@@ -26,11 +25,11 @@ export default class FileController extends Controller {
       const filePath = path.join('./app/public', project.app_name, fileName)
       const writeStream = fs.createWriteStream(filePath)
       stream.pipe(writeStream)
-      ctx.body = 'success'
-      ctx.state = 200
+      this.ctx.body = 'success'
+      this.ctx.state = 200
 
     } catch (e) {
-      ctx.state = 500
+      this.ctx.state = 500
       throw new Error(e)
     }
 
@@ -38,9 +37,8 @@ export default class FileController extends Controller {
 
   @Get('/get')
   public async get() {
-    const { ctx } = this
-    const data = await ctx.service.logBody.getOne(ctx.query.id)
-    ctx.success(data)
+    const data = await this.ctx.service.logBody.getOne(this.ctx.query.id)
+    this.ctx.success(data)
   }
 
   @Post('/list')

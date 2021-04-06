@@ -7,7 +7,7 @@ export default class DeviceService extends Service {
   async create(data) {
     const { ip } = data
     const res = await this.checkToDayIsSave(ip)
-    // if (!res) return true
+    if (!res) return true
     return await this.ctx.model.Device.create({
       ...data,
       pv: 1,

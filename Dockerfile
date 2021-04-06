@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . /app/
 
-RUN npm instal --registry=https://registry.npm.taobao.org
+RUN npm install --registry=https://registry.npm.taobao.org
 
 RUN npm run tsc
 

@@ -5,6 +5,10 @@ WORKDIR /app
 
 COPY . /app/
 
+RUN cnpm instal --registry=https://registry.npm.taobao.org
+
+RUN npm run tsc
+
 # 暴露容器端口
 EXPOSE 7001
 

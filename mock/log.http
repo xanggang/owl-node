@@ -17,15 +17,16 @@ Accept: application/json
 ### 测试设备
 POST http://localhost:7001/api/logs/store
 Content-Type: application/json
+apikey: eb3b37e7-785d-4759-84e8-ac3dcb973b87
 
 [
   {
     "type": "device",
-    "device_browser_name": "test1",
+    "device_browser_name": "Firefox",
     "device_browser_version": "81.0.4044.117",
-    "device_engine_name": "Webkit",
+    "device_engine_name": "Gecko",
     "device_engine_version": "605.1.15",
-    "device_os_name": "Mac OS X",
+    "device_os_name": "Windows",
     "device_os_version": "10.15.7"
   }
 ]

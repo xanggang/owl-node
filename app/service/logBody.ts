@@ -2,7 +2,6 @@ import { Service } from 'egg'
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import { Op } from 'sequelize'
-import path from 'path'
 import fs from 'fs'
 import { ILogBody } from '../model/logBody'
 import _ from 'lodash'
@@ -106,7 +105,6 @@ export default class LogBodyService extends Service {
     return res
   }
 
-
   // 保存错误的主体， 不包含客户端信息
   async create(data: any): Promise<any> {
     return this.ctx.model.LogBody.create({
@@ -124,16 +122,6 @@ export default class LogBodyService extends Service {
       // raw: true
     }
     return this.ctx.model.LogBody.findAll(query)
-  }
-
-  // 读取sourceMap路径
-  async getSourceMapPath(appName: string, file_path: string): Promise<string | null> {
-    const file_name = path.basename(file_path) + '.map'
-    const sourceMapPath = path.join('./app/public', appName, file_name)
-    if (fs.existsSync(sourceMapPath)) {
-      return sourceMapPath
-    }
-    return null
   }
 
   // 查询单个

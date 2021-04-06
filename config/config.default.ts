@@ -21,7 +21,7 @@ export default (appInfo: EggAppInfo) => {
   config.middleware = []
 
   config.cors = {
-    origin: '',
+    origin: '*',
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   }
 
@@ -50,6 +50,9 @@ export default (appInfo: EggAppInfo) => {
       typeCast: true,
     },
   }
+
+  // @ts-ignore
+  config.qiniu = self.qiniu
 
   // add your special config in here
   const bizConfig = {

@@ -10,20 +10,20 @@ export default class FileController extends Controller {
   public async uploadSourceMap() {
     const { ctx } = this
     const stream = ctx.req
-    const { fileName, appName } = this.ctx.query
-    const isRepeat = await this.ctx.service.project.checkAppName(appName)
-    if (!isRepeat) {
+    const { fileName, apiKey } = this.ctx.query
+    const project = await this.ctx.service.project.getOneByAppKey(apiKey)
+    if (!project) {
       ctx.status = 500
       ctx.body = '应用名不存在, 请先创建对应的应用'
       console.error('应用名不存在, 请先创建对应的应用')
       return
     }
     try {
-      const dir = path.join('./app/public', appName)
+      const dir = path.join('./app/public', project.app_name)
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir)
       }
-      const filePath = path.join('./app/public', appName, fileName)
+      const filePath = path.join('./app/public', project.app_name, fileName)
       const writeStream = fs.createWriteStream(filePath)
       stream.pipe(writeStream)
       ctx.body = 'success'
@@ -40,7 +40,7 @@ export default class FileController extends Controller {
   public async get() {
     const { ctx } = this
     const data = await ctx.service.logBody.getOne(ctx.query.id)
-    ctx.body = data || {}
+    ctx.success(data)
   }
 
   @Post('/list')

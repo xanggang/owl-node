@@ -9,11 +9,14 @@ export default class FileController extends Controller {
   @Post('/store', [ sysCors ])
   async uploadLog() {
     const { ctx } = this
-    // const { api_key } = ctx.request.headers
-    const api_key = '123'
+    const apikey = ctx.request?.headers['Owl-Api-Key']
+    if (!apikey) {
+      this.ctx.error('apiKey错误， 请确认')
+      return
+    }
     const queue = ctx.request.body || []
     const ip = ctx.request.ip
-    const project = await this.ctx.service.project.getOneByAppKey(api_key)
+    const project = await this.ctx.service.project.getOneByAppKey(apikey)
     if (!project) {
       this.ctx.error(null, 'apiKey错误')
       return

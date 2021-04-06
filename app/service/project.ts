@@ -3,10 +3,12 @@ import { Op } from 'sequelize'
 
 export default class ProjectService extends Service {
 
+  // 新增一个项目
   async create(data) {
     return await this.ctx.model.Project.create(data)
   }
 
+  // 检查一个应用名是否已经存在
   async checkAppName(app_name) {
     const res = await this.ctx.model.Project.findAll({
       where: {
@@ -16,6 +18,7 @@ export default class ProjectService extends Service {
     return Array.isArray(res) && res.length
   }
 
+  // 通过应用名称查询应用详情
   async getOne(app_name) {
     const res = await this.ctx.model.Project.findAll({
       where: {
@@ -28,6 +31,7 @@ export default class ProjectService extends Service {
     return null
   }
 
+  // 通过id查询应用详情
   async getOneByAppKey(app_key) {
     const res = await this.ctx.model.Project.findAll({
       where: {
@@ -40,6 +44,7 @@ export default class ProjectService extends Service {
     return null
   }
 
+  // 删除
   async deleteProject(id) {
     const project = await this.ctx.model.Project.findByPk(id)
     if (!project) {
@@ -88,7 +93,7 @@ export default class ProjectService extends Service {
   // 根据项目查询时间段内的全部日志， 用于钉钉推送
   async getDayLogs(): Promise<any[]> {
     const { ctx: { model } } = this
-    const startTime = +new Date('2020-08-11 11:30:00')
+    const startTime = +new Date('2021-03-11 11:30:00')
     const endTime = +new Date()
 
     const res = await model.Project.findAll({
@@ -122,6 +127,7 @@ export default class ProjectService extends Service {
     return data
   }
 
+  // 列表查询
   async getProjectList() {
     return await this.ctx.model.Project.findAll()
   }

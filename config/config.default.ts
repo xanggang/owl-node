@@ -51,8 +51,9 @@ export default (appInfo: EggAppInfo) => {
     },
   }
 
-  // @ts-ignore
   config.qiniu = self.qiniu
+
+  config.mapFilePath = 'http://owl-file.lynn.cool/owl-web/'
 
   // add your special config in here
   const bizConfig = {

@@ -13,7 +13,7 @@
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
-    "test:unit": "egg-bin test test/app/service/device.ts",
+    "test:unit": "egg-bin test test/app/service/logBody.test.ts",
     "test": "npm run lint -- --fix && npm run test-local",
     "cov": "egg-bin cov",
     "tsc": "ets && tsc -p tsconfig.json",

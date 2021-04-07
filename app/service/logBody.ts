@@ -2,11 +2,11 @@ import { Service } from 'egg'
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import { Op } from 'sequelize'
-import fs from 'fs'
 import { ILogBody } from '../model/logBody'
 import _ from 'lodash'
 import dayjs from 'dayjs'
-import { getHash, sourceMapDeal, getSourceMapPath } from '../utils/sourceMap'
+import { getHash, sourceMapDeal } from '../utils/sourceMap'
+import path from 'path'
 
 export default class LogBodyService extends Service {
 
@@ -55,13 +55,12 @@ export default class LogBodyService extends Service {
     if (!historyLogs.length) {
       // 解析bug
       if (file_path && error && error.lineno && error.colno) {
-        const sourceMapPath = await getSourceMapPath(app_name, file_path)
-        if (sourceMapPath) {
-          const sourceMap = fs.readFileSync(sourceMapPath)
+        const sourceMap = await this.getErrorContent(file_path)
+        if (sourceMap) {
           err_content = await sourceMapDeal(
-            sourceMap.toString(),
+            sourceMap,
             error.lineno,
-            error.colno, 1)
+            error.colno, 10)
         }
       }
       err_content = err_content && err_content.length > 10000 ? 'too long' : err_content
@@ -103,6 +102,28 @@ export default class LogBodyService extends Service {
     const res = await historyLog.addLogDetails(detail)
     await historyLog.update({ updated_at: dayjs().format('YYYY-MM-DD HH:mm:ss') })
     return res
+  }
+
+  // 获取错误内容
+  async getErrorContent(filePath: string) {
+    let mapJson: any = ''
+    try {
+      const ormPath = this.app.config.mapFilePath + path.basename(filePath) + '.map'
+      console.log('加载远程map' + ormPath)
+      const res = await this.app.curl(ormPath, {
+        method: 'GET',
+        contentType: 'json',
+        dataType: 'json',
+        timeout: 1000 * 60,
+      })
+      if (res.status === 200 && res.data) {
+        mapJson = res.data
+      }
+    } catch (err) {
+      console.error('加载远程pah失败')
+      console.error(err)
+    }
+    return mapJson
   }
 
   // 保存错误的主体， 不包含客户端信息

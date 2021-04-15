@@ -18,8 +18,8 @@ sql文件在根目录
 3，七牛云相关
 ```
 {
-    "accessKey": "2alru5_IaH7milnTTB2f2Y-fhKMRWf1S9CYFLaMm",
-    "secretKey": "yN8Nf2JD1L6O2gN9EqBJ03Gz6SsLiCHRlG_amyza",
+    "accessKey": "-fhKMRWf1S9CYFLaMm",
+    "secretKey": "",
     "bucket": "owl-node"
 }
 ```
